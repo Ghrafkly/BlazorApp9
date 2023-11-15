@@ -2,7 +2,6 @@
 @using Microsoft.AspNetCore.Authorization
 @using BlazorApp9.Client.APIs
 
-@attribute [Authorize(Roles = "Admin")]
 @rendermode InteractiveAuto
 
 @inject IAdminService AdminService
@@ -50,6 +49,7 @@ else
 }
 
 @code {
+    // WEQ
     public List<UserInfo> Users { get; set; } = new();
 
     protected override async Task OnInitializedAsync()

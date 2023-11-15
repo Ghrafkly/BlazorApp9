@@ -10,7 +10,7 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
 // WEQ
-builder.Services.AddSingleton<IAdminService, AdminService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 builder.Services.AddHttpClient("BlazorApp9.ServerAPI",
         client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))

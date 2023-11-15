@@ -7,8 +7,6 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject RoleManager<IdentityRole> RoleManager
 
-@attribute [Authorize(Roles = "Admin")]
-
 <h1>Manage Admin</h1>
 <h1>(doesn't work, what I want to achieve in the client)</h1>
 
@@ -55,6 +53,7 @@ else
 
 @code
 {
+    // WEQ
     public List<UserInfo> Users { get; set; } = new ();
 
     public void Greet()
