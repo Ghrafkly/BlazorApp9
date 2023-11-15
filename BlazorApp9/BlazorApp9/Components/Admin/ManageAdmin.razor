@@ -1,0 +1,100 @@
+﻿@page "/Admin/ManageAdmin2"
+@using Microsoft.AspNetCore.Authorization
+@using BlazorApp9.Data
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore
+
+@inject UserManager<ApplicationUser> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+
+@attribute [Authorize(Roles = "Admin")]
+
+<h1>Manage Admin</h1>
+<h1>(doesn't work, what I want to achieve in the client)</h1>
+
+@if (Users.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Roles</th>
+                <th>Is Admin</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Users)
+            {
+                <tr>
+                    <td>@user.Email</td>
+                    <td>@user.UserName</td>
+                    <td>@string.Join(", ", user.Roles)</td>
+                    <td>@user.IsAdmin</td>
+                    <td>
+                        @if (user.IsAdmin)
+                        {
+                            <button class="btn btn-danger" @onclick="@(() => DemoteUser(user.UserId))">Demote</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-success" @onclick="@(() => PromoteUser(user.UserId))">Promote</button>
+                            <button @onclick="Greet">ClickMe</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No users found</p>
+}
+
+@code
+{
+    public List<UserInfo> Users { get; set; } = new ();
+
+    public void Greet()
+    {
+        Console.WriteLine("Greet");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var users = await UserManager.Users.ToListAsync();
+        foreach (var user in users)
+        {
+            var roles = await UserManager.GetRolesAsync(user);
+            var userInfo = new UserInfo
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Roles = new List<string>(roles),
+                IsAdmin = roles.Contains("Admin")
+            };
+            Users.Add(userInfo); 
+        }
+    }
+
+    public async Task PromoteUser(string userId)
+    {
+        Console.WriteLine("PromoteUser");
+        var user = await UserManager.FindByIdAsync(userId);
+        await UserManager.AddToRoleAsync(user, "Admin");
+        await OnInitializedAsync();
+    }
+
+    public async Task DemoteUser(string userId)
+    {
+        Console.WriteLine("DemoteUser");
+        var user = await UserManager.FindByIdAsync(userId);
+        await UserManager.RemoveFromRoleAsync(user, "Admin");
+        await OnInitializedAsync();
+    }
+}
+
+

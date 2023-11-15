@@ -1,0 +1,73 @@
+﻿@page "/Admin/ManageAdmin"
+@using Microsoft.AspNetCore.Authorization
+@using BlazorApp9.Client.APIs
+
+@attribute [Authorize(Roles = "Admin")]
+@rendermode InteractiveAuto
+
+@inject IAdminService AdminService
+
+<h1>ManageAdmin</h1>
+
+@if (Users.Count > 0)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Roles</th>
+            <th>Is Admin</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in Users)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@user.UserName</td>
+                <td>@string.Join(", ", user.Roles)</td>
+                <td>@user.IsAdmin</td>
+                <td>
+                    @if (user.IsAdmin)
+                    {
+                        <button class="btn btn-danger" @onclick="@(() => DemoteUser(user.UserId))">Demote</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-success" @onclick="@(() => PromoteUser(user.UserId))">Promote</button>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No users found</p>
+}
+
+@code {
+    public List<UserInfo> Users { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Users = await AdminService.GetAllUsers();
+    }
+
+    public async Task PromoteUser(string userId)
+    {
+        Console.WriteLine("PromoteUser");
+        // await AdminService.PromoteUser(userId);
+        await OnInitializedAsync();
+    }
+
+    public async Task DemoteUser(string userId)
+    {
+        Console.WriteLine("DemoteUser");
+        // await AdminService.DemoteUser(userId);
+        await OnInitializedAsync();
+    }
+}
