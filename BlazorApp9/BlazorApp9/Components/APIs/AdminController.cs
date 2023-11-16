@@ -9,9 +9,9 @@ namespace BlazorApp9.Components.APIs;
 //[Authorize(Roles = "Admin")]
 public class AdminController : ControllerBase
 {
-    private readonly IAdminService _adminService;
+    private readonly BlazorApp9.Client.APIs.IAdminService _adminService;
 
-    public AdminController(IAdminService adminService)
+    public AdminController(BlazorApp9.Client.APIs.IAdminService adminService)
     {
         _adminService = adminService;
     }

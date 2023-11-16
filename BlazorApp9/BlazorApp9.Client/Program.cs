@@ -12,11 +12,10 @@ builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticat
 // WEQ
 builder.Services.AddScoped<IAdminService, AdminService>();
 
-builder.Services.AddHttpClient("BlazorApp9.ServerAPI",
+builder.Services
+    .AddHttpClient<AdminService>(
         client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-
-builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("BlazorApp9.ServerAPI"));
 
 await builder.Build().RunAsync();
 

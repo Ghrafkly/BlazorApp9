@@ -19,7 +19,7 @@ builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 // WEQ
-builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<BlazorApp9.Client.APIs.IAdminService, AdminService>();
 
 builder.Services.AddAuthentication(options =>
     {

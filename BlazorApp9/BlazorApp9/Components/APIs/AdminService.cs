@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp9.Components.APIs;
 // WEQ
-public class AdminService : IAdminService
+public class AdminService : BlazorApp9.Client.APIs.IAdminService
 {
     private readonly ApplicationDbContext _context;
 
